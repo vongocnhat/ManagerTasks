@@ -1,0 +1,17 @@
+.unitper{
+    width: 95px;
+}
+.percent-sign:after{
+content: "%";
+position:absolute;
+top: 7px;
+margin-left:55px;
+}
+.no-spin::-webkit-calendar-picker-indicator {
+  -webkit-appearance: none;
+  display:none;
+  -moz-appearance: none;
+}
+td, th{
+    border: 1px solid #dddddd;
+}

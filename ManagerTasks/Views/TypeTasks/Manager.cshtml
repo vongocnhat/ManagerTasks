@@ -1,0 +1,47 @@
+﻿@model ManagerTasks.Models.TypeTask
+@{
+    TempData["Create"] = ViewBag.Title;
+}
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>TypeTask</h4>
+        <hr />
+        <div class="form-group">
+            @Html.LabelFor(model => model.CategoryTask.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.IdCategoryTask, null, "--- Select ---", new { @class = "form-control ajaxCategoryTasks", @required = "" })
+                @Html.ValidationMessageFor(model => model.IdCategoryTask, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", @required = "" } })
+                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+                @Html.ActionLink("Cancel", "Index", "TypeTasks", new { @class = "btn btn-danger" })
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+@section scripts{
+    <script>
+        var id = @(Model != null ? Model.Id.ToString() : "0");
+        if (id != 0) {
+            $('.ajaxCategoryTasks').prop('disabled', 'disabled');
+        }
+    </script>    
+}

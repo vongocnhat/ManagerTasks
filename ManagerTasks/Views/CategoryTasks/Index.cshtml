@@ -1,0 +1,23 @@
+﻿@model IEnumerable<ManagerTasks.Models.CategoryTask>
+
+@{
+    ViewBag.Title = "List Category Tasks";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>List Category Tasks</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Manager", new { id = 0 }, new { @class = "btn btn-success" })
+</p>
+
+@Html.Partial("TableTool")
+
+<div id="containlist">
+    @Html.Partial("CategoryTasksList", Model)
+</div>
+@section scripts
+{
+    <script src="~/Content/js/Ajax.js"></script>
+    <script src="~/Content/js/myjquery.delete.js"></script>
+}

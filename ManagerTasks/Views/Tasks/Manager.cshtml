@@ -1,0 +1,151 @@
+﻿@model ManagerTasks.Models.Task
+
+@{    
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Task</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">
+            @Html.Label("Title Category Task", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <select name="IdCategoryTask" id="IdCategoryTask" data-val="true" class="form-control">
+
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.IdTypeTask, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <select name="IdTypeTask" id="IdTypeTask" data-val="true" class="form-control">
+
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", @required = "" } })
+                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.FromDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.FromDate, new { htmlAttributes = new { @class = "form-control no-spin", @type = "date", @required = "", @max = "9999-12-31" } })
+                @Html.ValidationMessageFor(model => model.FromDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DeadlineDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DeadlineDate, new { htmlAttributes = new { @class = "form-control no-spin", @type = "date", @required = "", @max = "9999-12-31" } })
+                @Html.ValidationMessageFor(model => model.DeadlineDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @required = "", @rows = "3" })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.UnitPer, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                
+                @Html.EditorFor(model => model.UnitPer, new { htmlAttributes = new { @class = "unitper form-control", @type = "number", @step = "any", @required = "", @min = "0", @max = "100" } })
+                <span class="percent-sign"></span>
+                @Html.ValidationMessageFor(model => model.UnitPer, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.CheckBoxFor(model => model.IsActive, new { @class = "form-control", @checked="" })
+                @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-success" style="margin-right: 30px;" />
+                @Html.ActionLink("Cancel", "Index", "Tasks", new { @class = "btn btn-danger" })
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+@section Css{
+    <link href="~/Content/calendar/css/datepicker.min.css" rel="stylesheet" />
+}
+@section Scripts {
+    @*@Scripts.Render("~/bundles/jqueryval")*@
+    <script src="~/Content/js/myjquery.form_datevalidation.js"></script>
+    <script src="~/Content/calendar/js/datepicker.min.js"></script>
+    <script src="~/Content/calendar/js/datepicker.en.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('input[type="date"]').datepicker({
+                language: 'en',
+                dateFormat: 'yyyy-mm-dd',
+                todayButton: new Date(),
+                clearButton: true,
+                autoClose: true,
+            });
+        });
+    </script>
+    <script>
+        //load categoryTasks
+        var url = window.location.href;
+        url = url.substr(0, url.indexOf('Tasks')) + 'Tasks/GetCategoryTasks'+'?selected='+@(Model != null ? Model.TypeTask.IdCategoryTask.ToString() : "0");
+        $.ajax({
+            url: url,
+            success: function (result) {
+                $.each(result, function (index, item) {
+                    selected = item.Selected ? "selected" : "";
+                    $('select[name="IdCategoryTask"]').append("<option value="+item.Value+" " + selected + ">"+item.Text+"</option>");
+                });
+            }
+        });
+
+        $('select[name="IdCategoryTask"]').change(function () {
+            var str = "";
+            var url = window.location.href;
+            url = url.substr(0, url.indexOf('Tasks')) + 'Tasks/GetTypeTasks' + '?idCategoryTask=' + ($(this).find('option:selected').val()) + '&selected=' + @(Model != null ? Model.IdTypeTask.ToString() : "0");
+            $.ajax({
+                url: url,
+                success: function (result) {
+                    $.each(result, function (index, item) {
+                        selected = item.Selected ? "selected" : "";
+                        str += ("<option value='" + item.Value + "' " + selected + ">" + item.Text + "</option>");
+                    });
+                    $('select[name="IdTypeTask"]').html(str);
+                }
+            });
+        });
+        $(document).one('ajaxComplete', function () {
+            $('select[name="IdCategoryTask"]').change();
+        });
+    </script>
+}

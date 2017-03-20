@@ -1,0 +1,34 @@
+﻿<div class="col-md-12">
+    <div class="form-group">
+        <div class="row">
+            <div class="col-sm-6">
+                <label>
+                    Show
+                    <select name="pageSize" class="form-control" style="width: auto; display:unset;">
+                        <option>5</option>
+                        <option>10</option>
+                        <option>50</option>
+                        <option>100</option>
+                        <option>All</option>
+                    </select> entries
+                </label>                
+            </div>
+            <div class="col-sm-6">
+                <label style="line-height: 34px;" class="control-label col-md-12">
+                    Search Column: <select name="searchColumn" class="form-control" style="width: auto; display: unset;"></select>
+                </label>
+                <br>
+                <label style="line-height: 34px;" class="control-label col-md-12">
+                    Search: <input type="search" id="searchString" name="searchString" class="form-control" style="width: auto; display: unset;" />
+                            <select name="isActive" style="width: auto; display: none;" class="form-control">
+                                <option>True</option>
+                                <option>False</option>
+                            </select>
+                            <input type="date" name="searchDate" class="form-control no-spin" style="width: auto; display: none;" max="9999-12-31" />
+                </label>
+                
+            </div>
+        </div>
+        <input type="submit" class="btn btn-danger" name="btnDelete" value="Delete Selected" />
+    </div>
+</div>

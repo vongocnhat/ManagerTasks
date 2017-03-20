@@ -1,0 +1,39 @@
+﻿@model IEnumerable<ManagerTasks.Models.Task>
+
+@{
+    ViewBag.Title = "List Tasks";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>List Tasks</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Manager", new { id = 0 }, new { @class = "btn btn-success" })
+</p>
+  
+@Html.Partial("TableTool")
+
+<div id="containlist">
+    @Html.Partial("TasksList", Model)
+</div>
+@section Css{
+    <link href="~/Content/calendar/css/datepicker.min.css" rel="stylesheet" />
+}
+@section scripts
+{
+    <script src="~/Content/js/Ajax.js"></script>
+    <script src="~/Content/js/myjquery.delete.js"></script>
+    <script src="~/Content/calendar/js/datepicker.min.js"></script>
+    <script src="~/Content/calendar/js/datepicker.en.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('input[type="date"]').datepicker({
+                language: 'en',
+                dateFormat: 'yyyy-mm-dd',
+                todayButton: new Date(),
+                clearButton: true,
+                autoClose: true,
+            });
+        });
+    </script>
+}

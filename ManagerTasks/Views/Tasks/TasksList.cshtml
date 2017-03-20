@@ -1,0 +1,53 @@
+﻿@model PagedList.IPagedList<ManagerTasks.Models.Task>
+@using PagedList.Mvc
+
+@using (Html.BeginForm("Delete", "Tasks", FormMethod.Post, new { @id = "deleteform" }))
+{
+    <table class="table">
+        <tr>
+            <th style="width: 30px"><input type="checkbox" id="thcheckbox" /></th>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().IdTypeTask)</th>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().Title)</th>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().FromDate)</th>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().DeadlineDate)</th>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().Description)</th>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().UnitPer)</th>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().IsActive)</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td><input type="checkbox" name="Id" value="@item.Id" /></td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TypeTask.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @{ var FromDate = item.FromDate.ToString("d"); }
+                    @Html.DisplayFor(modelItem => FromDate)
+                <td>
+                    @{ var DeadlineDate = item.DeadlineDate.ToString("d"); }
+                    @Html.DisplayFor(modelItem => DeadlineDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UnitPer)%
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsActive)
+                </td>                              
+                <td>@Html.ActionLink("Edit", "Manager", new { id = item.Id }, new { @class = "btn btn-info" })</td>
+                <td><button type="submit" name="Id" value="@item.Id" class="btn btn-danger" onclick="return confirm('Delete: '+'@item.Title'+' ?')">Delete</button></td>
+            </tr>
+                        }
+
+    </table>
+                        }
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
